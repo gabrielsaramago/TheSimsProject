@@ -15,7 +15,9 @@ public class Message {
     public static final String FINISH_WORKOUT = " finish work out. A bit stronger than before.";
     public static final String USE_TOILET = " is using the toilet.";
     public static final String MAID_CLEANING = "The maid is cleaning the house. Now the house is spotless !!";
-
-
     public static final String CALL_MAID = " call a maid to clean the house.";
+    public static final String ACTION_MENU_OPTIONS = "The options are: /useToilet | /workout | /work | /eat | /sleep | /move | /status";
+    public static final String MOVE_MENU_OPTIONS = "The options are: /bedroom | /bathroom | /livingRoom | /kitchen";
+
+    public static final String WELCOME_MESSAGE = "Welcome to the game !";
 }

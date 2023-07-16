@@ -17,11 +17,13 @@ public abstract class SimsCharacter {
     private boolean hasToUseToilet = false;
     private final double dailySalary = 100.0;
     private double mealPrice = 10.0;
+    private Player player;
 
-    public SimsCharacter(String playerName, int initialEnergyLevel, double playerCash) {
+    public SimsCharacter(String playerName, int initialEnergyLevel, double playerCash, Player player) {
         this.playerName = playerName;
         this.initialEnergyLevel = initialEnergyLevel;
         this.playerCash = playerCash;
+        this.player = player;
     }
 
     //getters & setters
@@ -51,28 +53,29 @@ public abstract class SimsCharacter {
     public void buyHouse(House house) {
         if(!hasHouse){
             playerCash -= house.getHOUSE_PRICE();
-            System.out.println("Player " + playerName + " bought a house !");
+            player.getPh().sendMessageToPlayer("Player " + playerName + " bought a house !");
             hasHouse = true;
             actualHouse = house;
+            actualRoom = RoomType.BEDROOM;
             return;
         }
-        System.out.println("The player " + playerName + " already have a house.");
+        player.getPh().sendMessageToPlayer("The player " + playerName + " already have a house.");
     }
 
     public void goToBedroom() {
-        System.out.println(playerName + Message.GO_TO_BEDROOM);
+        player.getPh().sendMessageToPlayer(playerName + Message.GO_TO_BEDROOM);
         actualRoom = RoomType.BEDROOM;
     }
     public void goToKitchen() {
-        System.out.println(playerName + Message.GO_TO_KITCHEN);
+        player.getPh().sendMessageToPlayer(playerName + Message.GO_TO_KITCHEN);
         actualRoom = RoomType.KITCHEN;
     }
     public void goToLivingRoom() {
-        System.out.println(playerName + Message.GO_TO_LIVINGROOM);
+        player.getPh().sendMessageToPlayer(playerName + Message.GO_TO_LIVINGROOM);
         actualRoom = RoomType.LIVING_ROOM;
     }
     public void goToBathroom(){
-        System.out.println(playerName + Message.GO_TO_BATHROOM);
+        player.getPh().sendMessageToPlayer(playerName + Message.GO_TO_BATHROOM);
         actualRoom = RoomType.BATHROOM;
     }
 
@@ -81,10 +84,10 @@ public abstract class SimsCharacter {
         checkHouseCleanliness();
         checkToiletNecessity();
         if (actualRoom==RoomType.BEDROOM){
-            System.out.println(playerName + Message.GO_TO_SLEEP);
+            player.getPh().sendMessageToPlayer(playerName + Message.GO_TO_SLEEP);
             increaseEnergyLevel(Activity.SLEEP);
             actualHouse.decreaseHouseLevelOfCleanliness(Activity.SLEEP.getHouseUse());
-            System.out.println(playerName + Message.WAKE_UP);
+            player.getPh().sendMessageToPlayer(playerName + Message.WAKE_UP);
             return;
         }
         throw new NotSuitableRoomException();
@@ -98,7 +101,7 @@ public abstract class SimsCharacter {
             throw new NotEnoughCashException();
         }
         if(actualRoom==RoomType.KITCHEN){
-            System.out.println(playerName + Message.EAT);
+            player.getPh().sendMessageToPlayer(playerName + Message.EAT);
             increaseEnergyLevel(Activity.EATING);
             actualHouse.decreaseHouseLevelOfCleanliness(Activity.EATING.getHouseUse());
             playerCash -= 10;
@@ -112,9 +115,9 @@ public abstract class SimsCharacter {
         checkHouseCleanliness();
         checkToiletNecessity();
         if(actualRoom==RoomType.LIVING_ROOM || actualRoom==RoomType.BEDROOM){
-            System.out.println(playerName + Message.START_WORK  + actualRoom);
+            player.getPh().sendMessageToPlayer(playerName + Message.START_WORK  + actualRoom);
             decreaseEnergyLevel(Activity.WORK);
-            System.out.println(playerName + Message.FINISH_WORK);
+            player.getPh().sendMessageToPlayer(playerName + Message.FINISH_WORK);
             actualHouse.decreaseHouseLevelOfCleanliness(Activity.WORK.getHouseUse());
             playerCash += dailySalary;
             return;
@@ -127,9 +130,9 @@ public abstract class SimsCharacter {
         checkHouseCleanliness();
         checkToiletNecessity();
         if(actualRoom==RoomType.LIVING_ROOM || actualRoom==RoomType.BEDROOM){
-            System.out.println(playerName + Message.START_WORKOUT);
+            player.getPh().sendMessageToPlayer(playerName + Message.START_WORKOUT);
             decreaseEnergyLevel(Activity.WORKOUT);
-            System.out.println(playerName + Message.FINISH_WORKOUT);
+            player.getPh().sendMessageToPlayer(playerName + Message.FINISH_WORKOUT);
             actualHouse.decreaseHouseLevelOfCleanliness(Activity.WORKOUT.getHouseUse());
             return;
         }
@@ -139,7 +142,8 @@ public abstract class SimsCharacter {
     public void useToilet() throws NotSuitableRoomException, NotHaveHouseException {
         checkHasHouse();
         if(actualRoom == RoomType.BATHROOM){
-            System.out.println(playerName + Message.USE_TOILET);
+            player.getPh().sendMessageToPlayer(playerName + Message.USE_TOILET);
+            actualHouse.decreaseHouseLevelOfCleanliness(Activity.GO_TO_BATHROOM.getHouseUse());
             hasToUseToilet = false;
             return;
         }
@@ -160,7 +164,7 @@ public abstract class SimsCharacter {
 
     public void callMaid(Maid maid) throws NotEnoughCashException{
         if(playerCash>maid.getDailySalary()){
-            System.out.println(playerName + Message.CALL_MAID);
+            player.getPh().sendMessageToPlayer(playerName + Message.CALL_MAID);
             maid.cleanHouse(actualHouse);
             playerCash -= maid.getDailySalary();
             return;
@@ -186,12 +190,13 @@ public abstract class SimsCharacter {
         }
     }
 
-    public void checkPlayerAndHouse(){
-        System.out.println("Player energy level: "+ getPlayerEnergyLevel());
-        System.out.println("Player cash: " + playerCash);
-        System.out.println("Player have to use toilet? " + hasToUseToilet);
-        System.out.println("House level of cleanliness: " + getActualHouse().getHouseLevelOfCleanliness());
-        System.out.println("");
+    public void charStatus(){
+        player.getPh().sendMessageToPlayer(
+                "Player is in the room: " + actualRoom + "\n"+
+                "Player energy level: " + getPlayerEnergyLevel() + "\n" + "Player cash: " + playerCash + "\n" +
+                "Player have to use toilet? " + hasToUseToilet + "\n" + "House level of cleanliness: " + getActualHouse().getHouseLevelOfCleanliness() + "\n"
+                );
+
     }
 
 
