@@ -4,8 +4,8 @@ public class FunnyPlayer extends SimsCharacter{
 
     private PlayerType playerType = PlayerType.FUNNY_PLAYER;
 
-    public FunnyPlayer(String playerName) {
-        super(playerName,110,6500);
+    public FunnyPlayer(String playerName, Player player) {
+        super(playerName,110,6500, player);
     }
 
 }
