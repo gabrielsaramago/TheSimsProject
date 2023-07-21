@@ -6,17 +6,17 @@ import mindera.mindswap.module1.sims.util.Message;
 import java.lang.reflect.Member;
 
 public class Maid {
-    private double dailySalary = 50;
+    private static double dailySalary = 50;
 
     public Maid() {
     }
 
-    public void cleanHouse (House house){
+    public static void cleanHouse (House house){
         house.setHouseLevelOfCleanliness(100);
         System.out.println(Message.MAID_CLEANING);
     }
 
-    public double getDailySalary() {
+    public static double getDailySalary() {
         return dailySalary;
     }
 }

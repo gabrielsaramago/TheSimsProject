@@ -75,7 +75,6 @@ public class Server {
         @Override
         public void run() {
             initializeBuffers();
-            System.out.println(Message.WELCOME_MESSAGE);
         }
 
         private void initializeBuffers(){

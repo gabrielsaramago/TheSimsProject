@@ -16,8 +16,32 @@ public class Message {
     public static final String USE_TOILET = " is using the toilet.";
     public static final String MAID_CLEANING = "The maid is cleaning the house. Now the house is spotless !!";
     public static final String CALL_MAID = " call a maid to clean the house.";
-    public static final String ACTION_MENU_OPTIONS = "The options are: /useToilet | /workout | /work | /eat | /sleep | /move | /status";
+    public static final String ACTION_MENU_OPTIONS = "The options are: /useToilet | /workout | /work | /eat | /sleep | /move | /status | /callMaid";
     public static final String MOVE_MENU_OPTIONS = "The options are: /bedroom | /bathroom | /livingRoom | /kitchen";
 
-    public static final String WELCOME_MESSAGE = "Welcome to the game !";
+    //public static final String WELCOME_MESSAGE = "Welcome to the game !";
+
+    public static final String WELCOME_MESSAGE = """
+                      _______  _        _______  _______  _______  _______  \s
+            |\\     /|(  ____ \\( \\      (  ____ \\(  ___  )(       )(  ____ \\ \s
+            | )   ( || (    \\/| (      | (    \\/| (   ) || () () || (    \\/ \s
+            | | _ | || (__    | |      | |      | |   | || || || || (__     \s
+            | |( )| ||  __)   | |      | |      | |   | || |(_)| ||  __)    \s
+            | || || || (      | |      | |      | |   | || |   | || (       \s
+            | () () || (____/\\| (____/\\| (____/\\| (___) || )   ( || (____/\\ \s
+            (_______)(_______/(_______/(_______/(_______)|/     \\|(_______/ \s
+            _________          _______    _______ _________ _______  _______\s
+            \\__   __/|\\     /|(  ____ \\  (  ____ \\\\__   __/(       )(  ____ \\
+               ) (   | )   ( || (    \\/  | (    \\/   ) (   | () () || (    \\/
+               | |   | (___) || (__      | (_____    | |   | || || || (_____\s
+               | |   |  ___  ||  __)     (_____  )   | |   | |(_)| |(_____  )
+               | |   | (   ) || (              ) |   | |   | |   | |      ) |
+               | |   | )   ( || (____/\\  /\\____) |___) (___| )   ( |/\\____) |
+               )_(   |/     \\|(_______/  \\_______)\\_______/|/     \\|\\_______)
+                                                                            \s
+            
+            
+            """;
+
+
 }
