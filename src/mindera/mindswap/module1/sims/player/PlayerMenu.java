@@ -58,6 +58,13 @@ public class PlayerMenu {
                 break;
             case "/status":
                 p.getPlayerChar().charStatus();
+                break;
+            case "/callMaid":
+                try {
+                    p.getPlayerChar().callMaid();
+                } catch (NotEnoughCashException e) {
+                    p.getPh().sendMessageToPlayer(e.getMessage());
+                }
             default:
                 System.out.println("Command invalid...");
                 break;

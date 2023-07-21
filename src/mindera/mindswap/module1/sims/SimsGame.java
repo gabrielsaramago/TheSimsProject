@@ -16,13 +16,11 @@ public class SimsGame implements Runnable{
     private List<Server.PlayerHandler> playerHandlers;
     private List<Player> players;
     private boolean gameOn;
-    private Maid maid;
     private PlayerMenu pm;
 
     public SimsGame(List<Server.PlayerHandler> playerHandlers) {
         this.playerHandlers = playerHandlers;
         gameOn = true;
-        maid = new Maid();
         pm = new PlayerMenu();
     }
 
@@ -30,7 +28,9 @@ public class SimsGame implements Runnable{
     public void run() {
         players = playerHandlers.stream().map(ph->new Player(ph)).collect(Collectors.toList());
         for(Player player : players){
+            player.getPh().sendMessageToPlayer(Message.WELCOME_MESSAGE);
             chooseCharacter(player);
+            beginningMessage(player);
         }
         playerRound();
     }
@@ -43,6 +43,12 @@ public class SimsGame implements Runnable{
         while(gameOn){
             pm.actionMenu(players.get(0));
         }
+    }
+    private void beginningMessage(Player player){
+        player.getPh().sendMessageToPlayer(player.getPlayerChar().getPlayerName() + " chose " + player.getPlayerChar().getPlayerType() +"\n"
+                + "You are in your bedroom after a long day... It's time to sleep and recover your energy.");
+
+
     }
 
 }

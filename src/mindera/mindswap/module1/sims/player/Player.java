@@ -17,7 +17,27 @@ public class Player {
     public void createSimsChar(){
         ph.sendMessageToPlayer("Choose the character name: ");
         String name = ph.receiveMessageFromPlayer();
-        playerChar = new FunnyPlayer(name, this);
+        chooseCharType(name);
+    }
+
+    private void chooseCharType(String name){
+        ph.sendMessageToPlayer("Choose the character type(S - funnyPlayer | SP - SportyPlayer | LZ - LazyPlayer");
+        String op = ph.receiveMessageFromPlayer();
+        if(op.toLowerCase().equals("s")){
+            playerChar = new FunnyPlayer(name, this);
+            return;
+        }
+        if(op.toLowerCase().equals("sp")){
+            playerChar = new SportyPlayer(name, this);
+            return;
+        }
+        if(op.toLowerCase().equals("lz")){
+            playerChar = new LazyPlayer(name, this);
+        }
+        else{
+            ph.sendMessageToPlayer("Choose a valid option !");
+            chooseCharType(name);
+        }
     }
 
     public SimsCharacter getPlayerChar() {

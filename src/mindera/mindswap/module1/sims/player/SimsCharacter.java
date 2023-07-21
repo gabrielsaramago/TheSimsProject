@@ -18,12 +18,14 @@ public abstract class SimsCharacter {
     private final double dailySalary = 100.0;
     private double mealPrice = 10.0;
     private Player player;
+    private PlayerType playerType;
 
-    public SimsCharacter(String playerName, int initialEnergyLevel, double playerCash, Player player) {
+    public SimsCharacter(String playerName, int initialEnergyLevel, double playerCash, Player player, PlayerType playerType) {
         this.playerName = playerName;
         this.initialEnergyLevel = initialEnergyLevel;
         this.playerCash = playerCash;
         this.player = player;
+        this.playerType = playerType;
     }
 
     //getters & setters
@@ -47,6 +49,10 @@ public abstract class SimsCharacter {
     }
     public House getActualHouse() {
         return actualHouse;
+    }
+
+    public PlayerType getPlayerType() {
+        return playerType;
     }
 
     //Action Methods
@@ -162,11 +168,11 @@ public abstract class SimsCharacter {
         throw new NotEnoughEnergyException();
     }
 
-    public void callMaid(Maid maid) throws NotEnoughCashException{
-        if(playerCash>maid.getDailySalary()){
+    public void callMaid() throws NotEnoughCashException{
+        if(playerCash>Maid.getDailySalary()){
             player.getPh().sendMessageToPlayer(playerName + Message.CALL_MAID);
-            maid.cleanHouse(actualHouse);
-            playerCash -= maid.getDailySalary();
+            Maid.cleanHouse(actualHouse);
+            playerCash -= Maid.getDailySalary();
             return;
         }
         throw new NotEnoughCashException();
@@ -198,6 +204,7 @@ public abstract class SimsCharacter {
                 );
 
     }
+
 
 
 
